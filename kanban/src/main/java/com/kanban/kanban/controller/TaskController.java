@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -14,17 +16,15 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @GetMapping
-    public ResponseEntity getAllProduct(){
-        var allTask = taskRepository.findAll();
-        return ResponseEntity.ok("deu ok");
-    }
-
     @PostMapping
     public TaskModel createTask(@RequestBody TaskModel task){
+        task.setStatus("Fazer");
         return taskService.save(task);
     }
+
+    @GetMapping
+    public List<TaskModel> searchTask() {
+       return taskService.findAll();
+    }
+
 }
